@@ -5,7 +5,7 @@ const webpackConfig = {
   entry: path.resolve(__dirname, "src", "index.js"),
 
   output: {
-    path: path.resolve(__dirname, "build"),
+    path: path.resolve(__dirname, "dist"),
     filename: "[name].[contenthash].bundle.js",
     clean: true,
   },
@@ -39,7 +39,23 @@ const webpackConfig = {
     }),
   ],
 
+  optimization: {
+    moduleIds: "deterministic",
+    runtimeChunk: "single",
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/i,
+          name: "vendors",
+          chunks: "all",
+        },
+      },
+    },
+  },
+
   devServer: { port: 6378, open: true, compress: true },
+
+  devtool: "inline-source-map",
 
   mode: "development",
 };
