@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const webpackConfig = {
-  entry: path.resolve(__dirname, "src", "index.js"),
+  entry: path.resolve(__dirname, "src", "index.tsx"),
 
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -10,12 +10,21 @@ const webpackConfig = {
     clean: true,
   },
 
+  resolve: {
+    extensions: [".js", ".jsx", ".json", ".tsx", ".ts"],
+  },
+
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
         use: "babel-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.(ts|tsx)$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/i,
@@ -53,7 +62,14 @@ const webpackConfig = {
     },
   },
 
-  devServer: { port: 6378, open: true, compress: true },
+  devServer: {
+    port: 6378,
+    open: true,
+    compress: true,
+    client: {
+      overlay: true,
+    },
+  },
 
   devtool: "inline-source-map",
 
